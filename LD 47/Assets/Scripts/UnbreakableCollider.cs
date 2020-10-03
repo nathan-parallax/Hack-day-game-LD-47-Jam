@@ -79,7 +79,7 @@ public class TrailRendererWith2DCollider : MonoBehaviour
         //get and set the polygon collider on this trail.
         collider = trail.GetComponent<PolygonCollider2D>();
         collider.isTrigger = colliderIsTrigger;
-        collider.SetPath(0, null);
+        collider.SetPath(0, new List<Vector2>());
 
         //get the transform of the object this script is attatched to
         trans = base.transform;
