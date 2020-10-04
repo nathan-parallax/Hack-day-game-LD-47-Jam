@@ -21,6 +21,9 @@ public class PlayerInfoController : MonoBehaviour {
         if (PlayerInfo.health <= 0) {
             //logic for game over
         }
-
+        if (Debug.isDebugBuild && Input.GetKeyDown(KeyCode.RightShift))
+        {
+            SceneManagement.LoadRandomLevel();
+        }
     }
 }
