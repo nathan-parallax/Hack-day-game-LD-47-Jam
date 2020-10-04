@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Diagnostics;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneManagement : MonoBehaviour
@@ -10,12 +12,12 @@ public class SceneManagement : MonoBehaviour
 
     public static void LoadRandomLevel()
     {
-        SceneManager.LoadSceneAsync(Random.Range(1, SceneManager.sceneCountInBuildSettings - 2));
+        SceneManager.LoadSceneAsync(UnityEngine.Random.Range(1, SceneManager.sceneCountInBuildSettings - 1));
     }
 
     public static void QuitApp()
     {
-        Application.Quit();
+        Application.Quit(0);
     }
 
     public static void LoadCredits()

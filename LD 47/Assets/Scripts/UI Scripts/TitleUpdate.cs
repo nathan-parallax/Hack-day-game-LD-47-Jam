@@ -9,7 +9,7 @@ public class TitleUpdate : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        
         //add logic here to detect what level we got and set the correpsonding title
         PlayerInfo.levelTitle = "Default Title";
         GetComponentInParent<Text>().text = PlayerInfo.levelTitle;
