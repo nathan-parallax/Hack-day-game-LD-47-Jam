@@ -5,8 +5,9 @@ using UnityEngine;
 public class Portals : MonoBehaviour
 {
 
-    public GameObject Portal;
+    public GameObject Destination;
     public GameObject Player;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,20 +17,28 @@ public class Portals : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        PlayerInfo.timeSinceLastTP += Time.deltaTime;
     }
 
     public void OnTriggerEnter2D(Collider2D other)
     {
+        if (Destination == null) return;
+
         if (other.gameObject.tag == "Player")
         {
-            StartCoroutine (Teleport ()); 
+            if (PlayerInfo.timeSinceLastTP > 2) {
+                StartCoroutine(Teleport());
+                PlayerInfo.timeSinceLastTP = 0;
+            }
         }
     }
 
     IEnumerator Teleport()
     {
         yield return new WaitForSeconds(0);
-        Player.transform.position = new Vector2(Portal.transform.position.x, Portal.transform.position.y);
+        Player.transform.position = new Vector2(Destination.transform.position.x, Destination.transform.position.y);
+
+        //if we teleport we also get a point, and we change slimed blocks to lava
+        PlayerInfo.score++;
     }
 }
