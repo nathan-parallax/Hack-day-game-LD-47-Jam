@@ -7,6 +7,7 @@ public class Portals : MonoBehaviour
 
     public GameObject Destination;
     public GameObject Player;
+    public AudioSource PortalSound;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +30,7 @@ public class Portals : MonoBehaviour
             if (PlayerInfo.timeSinceLastTP > 2) {
                 StartCoroutine(Teleport());
                 PlayerInfo.timeSinceLastTP = 0;
+                PortalSound.Play();
             }
         }
     }

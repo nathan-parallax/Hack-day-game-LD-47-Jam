@@ -7,6 +7,11 @@ public class FloorController : MonoBehaviour
 {
     public GameObject Player;
     public GameObject SpawnPortal;
+    public Material Tile1;
+    public Material Tile2;
+    public Material Tile3;
+    public AudioSource DeathSound;
+
 
     private int lastScore;
     
@@ -26,7 +31,8 @@ public class FloorController : MonoBehaviour
             if(tag == "SlimedFloor") {
                 tag = "Lava";
                 GetComponent<BoxCollider2D>().isTrigger = true;
-                GetComponent<MeshRenderer>().material.color = Color.clear;
+                //GetComponent<MeshRenderer>().material.color = Color.clear;
+                GetComponent<MeshRenderer>().sharedMaterial = Tile3;
             }
             lastScore = PlayerInfo.score;
         }
@@ -40,12 +46,14 @@ public class FloorController : MonoBehaviour
                 if (PlayerInfo.timeSinceLastTP > 2) {
                     PlayerInfo.health--;
                     StartCoroutine(Teleport());
+                    DeathSound.Play();
                     PlayerInfo.timeSinceLastTP = 0;
                 }
             }
             if(tag == "Floor") {
                 tag = "SlimedFloor";
-                GetComponent<MeshRenderer>().material.color = Color.red;
+                //GetComponent<MeshRenderer>().material.color = Color.red;
+                GetComponent<MeshRenderer>().sharedMaterial = Tile2;
             }
 
         }

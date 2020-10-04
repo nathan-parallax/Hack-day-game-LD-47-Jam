@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace NinjaController {
 
@@ -8,7 +9,15 @@ namespace NinjaController {
   [RequireComponent(typeof(Collider2D))]
   public class NinjaController : MonoBehaviour {
 
-    private Rigidbody2D RBody { get; set; }
+        //MySTUFFLOL
+        public Animator animator;
+        public AudioSource MovingSlime;
+        public AudioSource WallSlime;
+        public AudioSource JumpSfx;
+        public AudioSource LandSfx;
+        public int JumpSound = 0;
+
+        private Rigidbody2D RBody { get; set; }
 
     [SerializeField]
     private PhysicsParams physicsParams;
@@ -90,11 +99,96 @@ namespace NinjaController {
       RBody = GetComponent<Rigidbody2D>();
       allRenderers = new List<Renderer>(GetComponentsInChildren<Renderer>(true));
     }
+
+        //LOLMY STUFF LOL
+        public void Start()
+        {
+            //animator.Play("PlayerFallingAnim");
+            MovingSlime.Pause();
+            WallSlime.Pause();
+        }
       
     public void Update() {
 
-      //let's reset forces to 0 and then add regular gravitation
-      SimResetForce();
+            
+            if (currentVelocity.x == 0 && currentVelocity.y == 0)
+            {
+                if (animator.GetCurrentAnimatorStateInfo(0).IsName("PlayerLandingAnim") == false) ;
+                {
+                    MovingSlime.Pause();
+                    WallSlime.Pause();
+                    animator.Play("PlayerStandingAnim");
+                }
+            }
+
+            if (IsOnGround == true && currentVelocity.x != 0)
+            {
+                MovingSlime.UnPause();
+                WallSlime.Pause();
+                animator.Play("PlayerMovingAnim");
+                JumpSound = 0;
+            }
+
+            if (IsOnGround == true && IsInAir == true)
+            {
+                MovingSlime.Pause();
+                WallSlime.Pause();
+                LandSfx.Play();
+                animator.Play("PlayerLandingAnim");
+                JumpSound = 0;
+            }
+
+
+            if (isPlayerInAir == true && isPlayerOnWall == false && currentVelocity.y > 0)
+            {
+                MovingSlime.Pause();
+                WallSlime.Pause();
+                JumpSound = JumpSound + 1;
+                if (JumpSound == 2)
+                {
+                    JumpSfx.Play();
+                }
+                    animator.Play("PlayerJumpingAnim");
+            }
+
+            if (isPlayerInAir == true && isPlayerOnWall == false && currentVelocity.y < 0)
+            {
+                MovingSlime.Pause();
+                WallSlime.Pause();
+                animator.Play("PlayerFallingAnim");
+                JumpSound = 0;
+            }
+
+            if (isPlayerOnWall == true && currentVelocity.y > 0)
+            {
+                MovingSlime.Pause();
+                WallSlime.UnPause();
+                animator.Play("PlayerWallUpAnim");
+                JumpSound = 0;
+            }
+
+            if (isPlayerOnWall == true && currentVelocity.y < 0)
+            {
+                MovingSlime.Pause();
+                WallSlime.UnPause();
+                animator.Play("PlayerWallDownAnim");
+                JumpSound = 0;
+            }
+
+            Vector3 Scale = transform.localScale;
+            if (currentVelocity.x > 0)
+            {
+                Scale.x = -5;
+            }
+            if (currentVelocity.x < 0)
+            {
+                Scale.x = 5;
+            }
+            transform.localScale = Scale;
+
+
+            //let's reset forces to 0 and then add regular gravitation
+            SimResetForce();
       SimAddForce(new Vector2(0, PhysicsParams.gameGravity) * EntityMass);
 
       //process key input (like jumping key pressed, etc...)
@@ -147,8 +241,8 @@ namespace NinjaController {
           keyJumpRetrigger = true;
         }
 
-        //did player press down the jump button?
-        if (isKeyDownJump == true && keyJumpRetrigger == true) {
+                //did player press down the jump button?
+                if (isKeyDownJump == true && keyJumpRetrigger == true) {
           keyJumpPressed = true;
           keyJumpRetrigger = false;
 
@@ -156,13 +250,14 @@ namespace NinjaController {
           currentVelocity = new Vector2(currentVelocity.x, PhysicsParams.jumpUpVel);
         }
       } else if (isPlayerOnWall == true) {
+                
         //let's allow jumping again in case of being on the wall
         if (isKeyDownJump == false) {
           keyJumpRetrigger = true;
         }
         if (currentVelocity.y < 0) {//apply friction when moving downwards
-          SimAddForce(new Vector2(0, PhysicsParams.wallFriction) * EntityMass);
-        }
+          SimAddForce(new Vector2(0, PhysicsParams.wallFriction) * EntityMass);                    
+                }
         if (currentVelocity.y < PhysicsParams.wallFrictionStrongVelThreshold) {//apply even more friction when moving downwards fast
           SimAddForce(new Vector2(0, PhysicsParams.wallFrictionStrong) * EntityMass);
         }
@@ -173,12 +268,14 @@ namespace NinjaController {
           //in case we are moving down -> let's set the velocity directly
           //in case we are moving up -> sum up velocity
           if (IsOnWallLeft == true) {
+                        //scale is positive
             if (currentVelocity.y <= 0) {
               currentVelocity = new Vector2(PhysicsParams.jumpWallVelHorizontal, PhysicsParams.jumpWallVelVertical);
             } else {
               currentVelocity = new Vector2(PhysicsParams.jumpWallVelHorizontal, currentVelocity.y + PhysicsParams.jumpWallVelVertical);
             }
           } else if (IsOnWallRight == true) {
+                        
             if (currentVelocity.y <= 0)
               currentVelocity = new Vector2(-PhysicsParams.jumpWallVelHorizontal, PhysicsParams.jumpWallVelVertical);
             else
@@ -194,7 +291,7 @@ namespace NinjaController {
       //let's apply force in case we are holding the jump key during a jump.
       if (keyJumpPressed == true) {
         SimAddForce(new Vector2(0, PhysicsParams.jumpUpForce) * EntityMass);
-      }
+            }
       //however let's stop doing that as soon as we fall down after the up-phase.
       if (keyJumpPressed == true && currentVelocity.y <= 0) {
         keyJumpPressed = false;
@@ -208,8 +305,8 @@ namespace NinjaController {
       //-----------------
       //IN AIR SIDEWAYS:
       if (isPlayerInAir == true) {
-        //steering into moving direction (slow accel)
-        if (isKeyDownLeft == true && currentVelocity.x <= 0)
+                //steering into moving direction (slow accel)
+                if (isKeyDownLeft == true && currentVelocity.x <= 0)
           SimAddForce(new Vector2(-PhysicsParams.inAirMoveHorizontalForce, 0) * EntityMass);
         else if (isKeyDownRight == true && currentVelocity.x >= 0)
           SimAddForce(new Vector2(PhysicsParams.inAirMoveHorizontalForce, 0) * EntityMass);
