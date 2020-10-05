@@ -21,7 +21,8 @@ public class FloorController : MonoBehaviour
     {
         lastScore = PlayerInfo.score;
         if(tag == "Lava") {
-            GetComponent<MeshRenderer>().material.color = Color.clear;
+            //GetComponent<MeshRenderer>().material.color = Color.clear;
+            GetComponent<MeshRenderer>().sharedMaterial = Tile3;
         }
     }
 

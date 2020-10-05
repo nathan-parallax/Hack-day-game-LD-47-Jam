@@ -11,13 +11,13 @@ public class TitleUpdate : MonoBehaviour
     {
         
         //add logic here to detect what level we got and set the correpsonding title
-        PlayerInfo.levelTitle = "Default Title";
+       // PlayerInfo.levelTitle = "Default Title";
         GetComponentInParent<Text>().text = PlayerInfo.levelTitle;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        GetComponentInParent<Text>().text = PlayerInfo.levelTitle;
     }
 }

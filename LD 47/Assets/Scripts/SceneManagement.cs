@@ -12,7 +12,41 @@ public class SceneManagement : MonoBehaviour
 
     public static void LoadRandomLevel()
     {
-        SceneManager.LoadSceneAsync(UnityEngine.Random.Range(1, SceneManager.sceneCountInBuildSettings - 1));
+        int lvSelect = UnityEngine.Random.Range((int)1, (int)(7 + 1));//last num is exclusive
+        UnityEngine.Debug.Log(lvSelect);
+
+        //set name based on level #
+        //level titles live here so we dont have to worry about choosing scene based on name
+        switch (lvSelect) {
+            case 1:
+                PlayerInfo.levelTitle = "Level 1";
+                break;
+            case 2:
+                PlayerInfo.levelTitle = "Level 2";
+                break;
+            case 3:
+                PlayerInfo.levelTitle = "Level 3";
+                break;
+            case 4:
+                PlayerInfo.levelTitle = "Level 4";
+                break;
+            case 5:
+                PlayerInfo.levelTitle = "Level 5";
+                break;
+            case 6:
+                PlayerInfo.levelTitle = "Level 6";
+                break;
+            case 7:
+                PlayerInfo.levelTitle = "Lake Ludum";
+                break;
+            default:
+                PlayerInfo.levelTitle = $"{lvSelect}";
+                break;
+        }
+
+        UnityEngine.Debug.Log(PlayerInfo.levelTitle);
+
+        SceneManager.LoadSceneAsync($"Level {lvSelect}");
     }
 
     public static void QuitApp()
@@ -22,6 +56,6 @@ public class SceneManagement : MonoBehaviour
 
     public static void LoadCredits()
     {
-        SceneManager.LoadScene(SceneManager.sceneCountInBuildSettings - 1);
+        SceneManager.LoadScene("Credits");
     }
 }

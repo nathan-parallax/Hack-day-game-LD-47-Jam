@@ -12,4 +12,6 @@ public static class PlayerInfo
     //handled by Portals.cs
     public static float timeSinceLastTP = 0;
 
+    public static string finalTime = "";
+
 }
