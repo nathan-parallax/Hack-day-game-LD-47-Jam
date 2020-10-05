@@ -148,14 +148,14 @@ namespace NinjaController {
                 {
                     JumpSfx.Play();
                 }
-                    animator.Play("PlayerJumpingAnim");
+                    animator.Play("PlayerNewJumpingAnim");
             }
 
             if (isPlayerInAir == true && isPlayerOnWall == false && currentVelocity.y < 0)
             {
                 MovingSlime.Pause();
                 WallSlime.Pause();
-                animator.Play("PlayerFallingAnim");
+                animator.Play("PlayerNewFallingAnim");
                 JumpSound = 0;
             }
 
@@ -163,7 +163,7 @@ namespace NinjaController {
             {
                 MovingSlime.Pause();
                 WallSlime.UnPause();
-                animator.Play("PlayerWallUpAnim");
+                animator.Play("PlayerNewWallUpAnim");
                 JumpSound = 0;
             }
 
@@ -171,7 +171,7 @@ namespace NinjaController {
             {
                 MovingSlime.Pause();
                 WallSlime.UnPause();
-                animator.Play("PlayerWallDownAnim");
+                animator.Play("PlayerNewWallDownAnim");
                 JumpSound = 0;
             }
 

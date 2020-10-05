@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.VirtualTexturing;
+//using UnityEngine.Rendering.VirtualTexturing;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -24,9 +24,9 @@ public class PlayerInfoController : MonoBehaviour {
             PlayerInfo.finalTime = gameObject.GetComponentInChildren<Canvas>().GetComponentInChildren<Text>().text;
             SceneManager.LoadScene("GameOver");
         }
-        if (Debug.isDebugBuild && Input.GetKeyDown(KeyCode.RightShift))
+        /*if (Debug.isDebugBuild && Input.GetKeyDown(KeyCode.RightShift))
         {
             SceneManagement.LoadRandomLevel();
-        }
+        }*/
     }
 }

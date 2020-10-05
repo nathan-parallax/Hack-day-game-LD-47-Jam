@@ -11,22 +11,21 @@ public class CessPoolAnimator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //AnimationCall = System.Random.Range (1, 4);
-        if (1 < AnimationCall && AnimationCall < 2)
+        AnimationCall = UnityEngine.Random.Range((int)1, (int)(3 + 1));
+        if (AnimationCall == 1)
         {
             animator.Play("Cesspool1Anim");
         }
-        if (2 < AnimationCall && AnimationCall < 3)
+        if (AnimationCall == 2)
         {
             animator.Play("Cesspool2Anim");
         }
-        if (3 < AnimationCall && AnimationCall < 4)
+        if (AnimationCall == 3)
         {
             animator.Play("Cesspool3Anim");
         }
 
     }
-
     // Update is called once per frame
     void Update()
     {

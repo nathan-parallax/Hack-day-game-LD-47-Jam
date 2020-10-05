@@ -8,6 +8,7 @@ TagManager:
   - SlimedFloor
   - Lava
   - SpawnTile
+  - SceneM
   layers:
   - Default
   - TransparentFX
